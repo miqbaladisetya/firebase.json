@@ -1,0 +1,50 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+
+class InventorySystem {
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
+  Future<void> createItem(String itemName, int quantity) async {
+    await _firestore.collection('items').add({
+      'name': itemName,
+      'quantity': quantity,
+    });
+  }
+
+  Future<void> updateItem(String itemId, int newQuantity) async {
+    await _firestore.collection('items').doc(itemId).update({
+      'quantity': newQuantity,
+    });
+  }
+
+  Future<void> deleteItem(String itemId) async {
+    await _firestore.collection('items').doc(itemId).delete();
+  }
+
+  Stream<QuerySnapshot> getItems() {
+    return _firestore.collection('items').snapshots();
+  }
+}
+
+flutter pub add firebase_core
+flutter pub add cloud_firestore
+
+import 'package:firebase_core/firebase_core.dart';
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+  runApp(MyApp());
+}
+
+mkdir inventory_system
+cd inventory_system
+git init
+
+touch inventory_system.dart
+git add inventory_system.dart
+git commit -m "Initial commit"
+
+git remote add origin https://github.com/your-username/inventory-system.git
+git push -u origin master
+
